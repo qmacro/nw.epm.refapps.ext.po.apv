@@ -1,0 +1,55 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="nw.epm.refapps.ext.po.apv.view.S2_PurchaseOrders">
+	
+	<Page id="masterPage" title="{i18n>xtit.masterTitle}" showNavButton="true" navButtonPress="onNavButtonPress">
+		<subHeader>
+			<Toolbar>
+			    <!--Search field which triggers a (filtered) backend search.
+			        On desktop this control also provides an option to refresh the list. 
+			        On non desktop devices the pull to refresh control (see below) is used for that -->
+				<SearchField showRefreshButton="{device>/isDesktop}"
+					placeholder="{i18n>xtit.searchPlaceholder}" search="onSearch" width="100%">
+				</SearchField>
+			</Toolbar>
+		</subHeader>
+		
+		<content>
+		    <!-- On non desktop devices the user triggers the list refresh by pulling down the list (pull to refresh) -->
+		    <PullToRefresh visible="{device>/isNoDesktop}" refresh="onPullToRefresh" />
+
+		    <!--List of purchase orders that need to be approved. The list entries contain the information supplier name, total value, requester, change date and number of items-->
+		    <!-- Note that the select defined for the list items ensures, that all attributes that are required on S3 view are loaded already here -->
+			<List id="list" 
+			      items="{path: '/PurchaseOrders',
+			              sorter: {path: 'ChangedAt', descending: true},
+		          	      parameters: {select: 'POId,OrderedByName,SupplierName,GrossAmount,CurrencyCode,ChangedAt,DeliveryDateEarliest,LaterDelivDateExist,DeliveryAddress,ItemCount'}}"
+		          mode="{device>/listMode}" selectionChange="onItemSelect" updateFinished="onUpdateFinished">
+				 <items>
+					<ObjectListItem type="{device>/listItemType}"
+					 title="{SupplierName}"
+					 number="{path: 'GrossAmount', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.amountWithOutCurrency'}"
+					 numberUnit="{CurrencyCode}"
+					 selected="{selected}"
+					 press="onItemSelect"
+					 intro="{path:'OrderedByName', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.orderedBy'}" >
+                        <secondStatus>
+                            <ObjectStatus text="{path: 'ChangedAt', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.daysAgo'}" />
+                        </secondStatus>
+						<attributes>
+							<ObjectAttribute />
+							<ObjectAttribute text="{path: 'ItemCount', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.items'}" />
+						</attributes>
+					</ObjectListItem>
+				</items>
+				<swipeContent>
+                   <Button  text="{i18n>xbut.approve}" type="Accept" press="onSwipeApprove" />
+                 </swipeContent>
+			</List>
+		</content>
+		
+		<!--Empty footer bar to align with the footer bar of the detail view-->
+		<footer>
+			<Bar />
+		</footer>
+	</Page>
+	
+</mvc:View>

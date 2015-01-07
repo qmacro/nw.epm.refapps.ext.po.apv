@@ -1,0 +1,102 @@
+<mvc:View controllerName="nw.epm.refapps.ext.po.apv.view.S3_PurchaseOrderDetails" xmlns="sap.m"  xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc"
+            xmlns:core="sap.ui.core">
+            
+	<Page id="detailsPage" title="{i18n>xtit.detailTitle}" showNavButton="{device>/isPhone}" class="sapUiFioriObjectPage" navButtonPress="onNavButtonPress">
+
+        <!--Header information supplier name, total value with currency code, change date and requester of the selected purchase order -->
+		<ObjectHeader id="header" title="{SupplierName}"
+		              number="{path: 'GrossAmount', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.amountWithOutCurrency'}" 
+		              numberUnit="{CurrencyCode}"
+		              intro="{path:'OrderedByName', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.orderedBy'}">
+			<statuses>
+                <ObjectStatus text="{path: 'ChangedAt', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.daysAgo'}" />
+            </statuses>
+		</ObjectHeader>
+		
+		<!--Extension Point-->
+		<core:ExtensionPoint name="extensionAfterObjectHeader" />
+		
+		<!--Further information with purchase order number, delivery date and delivery address-->
+		<form:SimpleForm class="nwEpmRefappsApprovePOControlLayout"
+		    title="{i18n>xtit.formTitle}"
+		    layout="ResponsiveGridLayout" 
+		    minWidth="1024" 
+            maxContainerCols="2"
+		    labelSpanL="3" labelSpanM="3" 
+		    emptySpanL="5" emptySpanM="5" 
+		    columnsL="1" columnsM="1">
+			<Label text="{/#PurchaseOrder/POId/@sap:label}" />
+			<Text text="{POId}" />
+            <Label text="{/#PurchaseOrder/DeliveryDateEarliest/@sap:label}" />
+			<Text text="{parts:[{path: 'DeliveryDateEarliest'}, {path: 'LaterDelivDateExist'}], formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.deliveryDateAndLater' }" />
+			<Label text="{/#PurchaseOrder/DeliveryAddress/@sap:label}" />
+			<Text text="{DeliveryAddress}" />
+		</form:SimpleForm>
+
+		<!--Extension Point-->		
+		<core:ExtensionPoint name="extensionAfterForm" />
+		
+        <!--Item list-->
+	    <Table id ="PurchaseOrderItems" headerText="{viewProperties>/itemTableHeader}" updateFinished="onItemsTableUpdateFinished" class="nwEpmRefappsApprovePOControlLayout">
+    		<columns>
+    		    <!--Product description-->
+    		    <Column minScreenWidth="Tablet" demandPopin="true" width="30%">
+    			    <header>
+				        <Label text="{/#PurchaseOrderItem/Product/@sap:label}" />
+				    </header>
+			    </Column>
+			    <!--Delivery Date-->
+			    <Column minScreenWidth="Tablet" demandPopin="true" width="15%">
+    			    <header>
+					    <Label text="{/#PurchaseOrderItem/DeliveryDate/@sap:label}" />
+				    </header>
+			    </Column>
+			    <!--Ordered Quantity-->
+			    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right" width="15%">
+    			    <header>
+					    <Label text="{/#PurchaseOrderItem/Quantity/@sap:label}" />
+				    </header>
+			    </Column>
+			    <!--Item price-->
+			    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right" width="20%">
+    				<header>
+					    <Label text="{/#PurchaseOrderItem/Price/@sap:label}" />
+				    </header>
+			    </Column>
+			    <!--Total value of the item-->
+			    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right" width="20%">
+    				<header>
+					    <Label text="{/#PurchaseOrderItem/GrossAmount/@sap:label}" />
+				    </header>
+			    </Column>			    
+		    </columns>
+		    <ColumnListItem id ="POItemList">
+    			<cells>
+    			    <!--Product description-->
+    			    <Text text="{Product}" class="sapMTableContentMargin" />
+    			     <!--Delivery Date-->
+    			    <Text text="{path:'DeliveryDate', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.deliveryDate' }" class="sapMTableContentMargin" />
+    			    <!--Ordered Quantity-->
+    			    <Text text="{Quantity}" class="sapMTableContentMargin" />
+    			    <!--Item price-->
+    			    <Text text="{parts:[{path:'Price'}, {path:'PriceCurrency'}], formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.amountWithCurrency'}" 
+    			          class="sapMTableContentMargin" />
+    			    <!--Total value of the item-->
+    			    <ObjectNumber number="{path: 'GrossAmount', formatter: 'nw.epm.refapps.ext.po.apv.util.formatter.amountWithOutCurrency'}" 
+    			                  unit="{GrossAmountCurrency}" class="sapMTableContentMargin" />
+			    </cells>
+		    </ColumnListItem>
+	    </Table>
+
+        <!--Footer bar with "Approve" and "Reject" button and a button for opening an action sheet containing the standard "AddBookmark" button-->
+		<footer id="detailsFooter">
+			<Bar id="bar">
+				<contentRight id="detailsContentRight">
+					<Button id="approveButton" type="Accept" text="{i18n>xbut.approve}" press="onOpenApprovalDialog"></Button>
+					<Button id="rejectButton" type="Reject" text="{i18n>xbut.reject}" press="onOpenApprovalDialog"></Button>
+					<Button id="btnShare" icon="sap-icon://action"  press="onSharePressed"  />
+				</contentRight>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>

@@ -1,0 +1,7 @@
+{
+  "globals": {
+    "nw": false,
+    "document": false,
+    "window": false
+  }
+}

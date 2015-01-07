@@ -1,0 +1,39 @@
+/*Padding set to Important, otherwise it will be overwritten by css provided by the control*/
+.nwEpmRefappsApprovePOControlLayout {
+	padding: 1rem 1rem 0 1rem!important;
+}
+
+.sap-phone .nwEpmRefappsApprovePOControlLayout {
+	padding: 1rem 0 0 0 !important; 
+}
+
+/*Padding set to Important, otherwise it will be overwritten by css provided by the control*/
+.nwEpmRefappsApprovePOTextLayout {
+	padding: 1rem 1rem 0 1rem !important;
+	width: 100%;
+}
+
+/*Padding set to Important, otherwise it will be overwritten by css provided by the control*/
+.nwEpmRefappsApprovePOTextAreaLayout {
+	padding: 1rem 1rem 1rem 1rem !important;
+}
+
+.sap-phone .nwEpmRefappsApprovePOApprovalDialogLayout {
+	width: 100%;
+}
+
+/*Padding set to Important, otherwise it will be overwritten by css provided by the control*/
+.nwEpmRefappsApprovePOEmptyPageTextcontainer{
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align:center!important;
+    margin:auto;
+}
+
+.nwEpmRefappsApprovePOEmptyPageText{
+  text-align:left; 
+  font-size:1.5rem; 
+  color: @sapUiLightText;
+  margin: 0 2rem 0 2rem;
+}

@@ -1,0 +1,10 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:l="sap.ui.layout" controllerName="nw.epm.refapps.ext.po.apv.view.EmptyPage">
+	<Page enableScrolling="false" >
+		<content>
+			<l:HorizontalLayout class="nwEpmRefappsApprovePOEmptyPageTextcontainer">
+				<ObjectHeader responsive="true" title="{i18n>xtit.notFoundTitle}" class="nwEpmRefappsApprovePOEmptyPageText"/>
+			</l:HorizontalLayout>
+		</content>
+	</Page>
+</mvc:View>
